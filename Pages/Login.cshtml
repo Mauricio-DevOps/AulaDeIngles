@@ -4,24 +4,45 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<div class="login-page d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-3">
+                            <h3 class="mb-0">AulaDeIngles</h3>
+                            <small class="text-muted">Área de acesso</small>
+                        </div>
 
-<form method="post">
-    <div>
-        <label>Email</label><br />
-        <input asp-for="Email" />
-    </div>
-    <div style="margin-top:10px;">
-        <label>Senha</label><br />
-        <input asp-for="Password" type="password" />
-    </div>
+                        <form method="post" class="mt-3">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input asp-for="Email" class="form-control" placeholder="admin@teste.com" />
+                            </div>
 
-    <div style="margin-top:15px;">
-        <button type="submit">Entrar</button>
-    </div>
+                            <div class="mb-3">
+                                <label class="form-label">Senha</label>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Sua senha" />
+                            </div>
 
-    @if (!string.IsNullOrEmpty(Model.Error))
-    {
-        <p style="color:red; margin-top:10px;">@Model.Error</p>
-    }
-</form>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.Error))
+                            {
+                                <div class="alert alert-danger mt-3" role="alert">@Model.Error</div>
+                            }
+                        </form>
+
+                        <div class="text-center mt-3 text-muted small">
+                            Usuário de teste: <strong>admin@teste.com</strong> / <strong>123</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3 small text-muted">© 2026 AulaDeIngles</div>
+            </div>
+        </div>
+    </div>
+</div>
