@@ -2,7 +2,7 @@
   "modules": [
     {
       "id": "mod1",
-      "title": "M\u00F3dulo 1 - Basics",
+      "title": "Módulo 1 - Basics",
       "lessons": [
         {
           "id": "mod1-les1",
@@ -17,7 +17,7 @@
             {
               "id": "i2",
               "type": "audio",
-              "title": "\u00C1udio: Greetings",
+              "title": "Áudio: Greetings",
               "path": "/audios/mod1-les1-greetings.mp3"
             },
             {
@@ -44,7 +44,7 @@
     },
     {
       "id": "m-1768853014047-982",
-      "title": "M\u00F3dulo 2 - Basics",
+      "title": "Módulo 2 - Basics",
       "lessons": [
         {
           "id": "l-1768853023886-897",
