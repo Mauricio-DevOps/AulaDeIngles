@@ -1,0 +1,27 @@
+@page
+@model AulaDeIngles.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form method="post">
+    <div>
+        <label>Email</label><br />
+        <input asp-for="Email" />
+    </div>
+    <div style="margin-top:10px;">
+        <label>Senha</label><br />
+        <input asp-for="Password" type="password" />
+    </div>
+
+    <div style="margin-top:15px;">
+        <button type="submit">Entrar</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <p style="color:red; margin-top:10px;">@Model.Error</p>
+    }
+</form>

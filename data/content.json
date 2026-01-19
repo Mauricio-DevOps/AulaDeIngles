@@ -1,0 +1,18 @@
+{
+  "modules": [
+    {
+      "id": "mod1",
+      "title": "Módulo 1 - Basics",
+      "lessons": [
+        {
+          "id": "mod1-les1",
+          "title": "Aula 1 - Greetings",
+          "items": [
+            { "id": "i1", "type": "text", "title": "Texto: Hello / Hi", "path": "/texts/mod1-les1-greetings.txt" },
+            { "id": "i2", "type": "audio", "title": "Áudio: Greetings", "path": "/audios/mod1-les1-greetings.mp3" }
+          ]
+        }
+      ]
+    }
+  ]
+}

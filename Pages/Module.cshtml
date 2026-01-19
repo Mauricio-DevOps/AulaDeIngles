@@ -1,0 +1,34 @@
+@page
+@model AulaDeIngles.Pages.ModuleModel
+@{
+    ViewData["Title"] = "Módulo";
+}
+
+@if (Model.ModuleData == null)
+{
+    <p>Módulo não encontrado.</p>
+}
+else
+{
+    <h2>@Model.ModuleData.Title</h2>
+    <p><small>@Model.ModuleDone/@Model.ModuleTotal concluídos</small></p>
+
+    <ul>
+        @foreach (var lesson in Model.ModuleData.Lessons)
+        {
+            var total = lesson.Items.Count;
+            var done = lesson.Items.Count(i => Model.DoneItems.Contains(i.Id));
+
+            <li>
+                <a asp-page="/Lesson" asp-route-id="@lesson.Id">
+                    @lesson.Title
+                </a>
+                <small>(@done/@total)</small>
+            </li>
+        }
+    </ul>
+
+    <p style="margin-top:20px;">
+        <a asp-page="/Library">← Voltar</a>
+    </p>
+}

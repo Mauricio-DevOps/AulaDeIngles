@@ -1,0 +1,18 @@
+@page
+@model AulaDeIngles.Pages.LibraryModel
+@{
+    ViewData["Title"] = "Biblioteca";
+}
+
+<h2>Biblioteca</h2>
+
+@foreach (var module in Model.Content.Modules)
+{
+    var total = module.Lessons.Sum(l => l.Items.Count);
+    var done = module.Lessons.Sum(l => l.Items.Count(i => Model.DoneItems.Contains(i.Id)));
+
+    <h3>
+        <a asp-page="/Module" asp-route-id="@module.Id">@module.Title</a>
+        <small>(@done/@total)</small>
+    </h3>
+}

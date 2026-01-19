@@ -1,0 +1,31 @@
+@page
+@model AulaDeIngles.Pages.LessonModel
+@{
+    ViewData["Title"] = "Aula";
+}
+
+@if (Model.LessonData == null || Model.ModuleData == null)
+{
+    <p>Aula não encontrada.</p>
+}
+else
+{
+    <h2>@Model.LessonData.Title</h2>
+    <p><small>@Model.LessonDone/@Model.LessonTotal concluídos</small></p>
+
+    <ul>
+        @foreach (var item in Model.LessonData.Items)
+        {
+            <li>
+                @(Model.DoneItems.Contains(item.Id) ? "✅" : "⬜")
+                <a asp-page="/Item" asp-route-id="@item.Id">
+                    @item.Type.ToUpper() - @item.Title
+                </a>
+            </li>
+        }
+    </ul>
+
+    <p style="margin-top:20px;">
+        <a asp-page="/Module" asp-route-id="@Model.ModuleData.Id">← Voltar</a>
+    </p>
+}

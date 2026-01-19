@@ -1,0 +1,49 @@
+@page
+@model AulaDeIngles.Pages.ItemModel
+@{
+    ViewData["Title"] = "Conteúdo";
+}
+
+<form method="post" style="margin: 16px 0;">
+    <input type="hidden" asp-for="Id" />
+    <label>
+        <input asp-for="IsDone" />
+        Marcar como concluído
+    </label>
+    <button type="submit" style="margin-left:10px;">Salvar</button>
+</form>
+
+
+<h2>Conteúdo</h2>
+
+@if (Model.Item == null)
+{
+    <p>Item não encontrado.</p>
+}
+else
+{
+    <p><strong>@Model.Item.Title</strong></p>
+
+    @if (Model.Item.Type == "text")
+    {
+        <pre style="background:#f5f5f5; padding:12px; border-radius:6px; white-space:pre-wrap;">
+            @Model.TextContent
+        </pre>
+    }
+    else if (Model.Item.Type == "audio")
+    {
+        <audio controls style="width: 100%;">
+            <source src="@Model.Item.Path" type="audio/mpeg" />
+            Seu navegador não suporta áudio.
+        </audio>
+    }
+    else
+    {
+        <p><strong>Tipo:</strong> @Model.Item.Type</p>
+        <p><strong>Caminho:</strong> @Model.Item.Path</p>
+    }
+
+    <p style="margin-top:20px;">
+        <a asp-page="/Library">← Voltar</a>
+    </p>
+}
