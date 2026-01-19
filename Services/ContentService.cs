@@ -15,4 +15,11 @@ public static class ContentService
             PropertyNameCaseInsensitive = true
         }) ?? new ContentRoot();
     }
+
+    public static void Save(ContentRoot content)
+    {
+        var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "content.json");
+        var json = JsonSerializer.Serialize(content, new JsonSerializerOptions { WriteIndented = true });
+        System.IO.File.WriteAllText(jsonPath, json);
+    }
 }

@@ -1,0 +1,189 @@
+@page
+@model AulaDeIngles.Pages.EditLibraryModel
+@{
+    ViewData["Title"] = "Editar Biblioteca";
+}
+
+<h1>Editar Biblioteca</h1>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<form method="post" id="editForm">
+    <input type="hidden" id="JsonContent" name="JsonContent" />
+
+    <div class="mb-3">
+        <button type="button" class="btn btn-success" onclick="addModule()">Adicionar módulo</button>
+    </div>
+
+    <div id="editor"></div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>
+
+<script>
+    const initialJson = @Html.Raw(Model.JsonContent ?? "{}");
+
+    function createInput(placeholder, value) {
+        const inp = document.createElement('input');
+        inp.className = 'form-control mb-1';
+        inp.placeholder = placeholder;
+        inp.value = value ?? '';
+        return inp;
+    }
+
+    function createButton(text, cls, onclick) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = cls + ' me-1';
+        b.textContent = text;
+        b.onclick = onclick;
+        return b;
+    }
+
+    function addModule(data) {
+        const editor = document.getElementById('editor');
+        const module = document.createElement('div');
+        module.className = 'card mb-3 p-3';
+
+        const idInput = createInput('Module Id', data?.Id ?? ('m-' + Date.now() + '-' + Math.floor(Math.random()*1000)));
+        const titleInput = createInput('Module Title', data?.Title ?? '');
+
+        const header = document.createElement('div');
+        header.appendChild(idInput);
+        header.appendChild(titleInput);
+
+        const controls = document.createElement('div');
+        controls.className = 'mb-2';
+        controls.appendChild(createButton('Adicionar aula', 'btn btn-sm btn-secondary', () => addLesson(module)));
+        controls.appendChild(createButton('Remover módulo', 'btn btn-sm btn-danger', () => module.remove()));
+
+        const lessonsContainer = document.createElement('div');
+        lessonsContainer.className = 'ps-3';
+
+        module.appendChild(header);
+        module.appendChild(controls);
+        module.appendChild(lessonsContainer);
+
+        editor.appendChild(module);
+
+        (data?.Lessons ?? []).forEach(l => addLesson(module, l));
+        return module;
+    }
+
+    function addLesson(moduleDiv, data) {
+        const lessonsContainer = moduleDiv.querySelector('.ps-3');
+        const lesson = document.createElement('div');
+        lesson.className = 'card mb-2 p-2';
+
+        const idInput = createInput('Lesson Id', data?.Id ?? ('l-' + Date.now() + '-' + Math.floor(Math.random()*1000)));
+        const titleInput = createInput('Lesson Title', data?.Title ?? '');
+
+        const controls = document.createElement('div');
+        controls.className = 'mb-2';
+        controls.appendChild(createButton('Adicionar item', 'btn btn-sm btn-secondary', () => addItem(lesson)));
+        controls.appendChild(createButton('Remover aula', 'btn btn-sm btn-danger', () => lesson.remove()));
+
+        const itemsContainer = document.createElement('div');
+        itemsContainer.className = 'ps-3';
+
+        lesson.appendChild(idInput);
+        lesson.appendChild(titleInput);
+        lesson.appendChild(controls);
+        lesson.appendChild(itemsContainer);
+
+        lessonsContainer.appendChild(lesson);
+
+        (data?.Items ?? []).forEach(i => addItem(lesson, i));
+        return lesson;
+    }
+
+    function addItem(lessonDiv, data) {
+        const itemsContainer = lessonDiv.querySelector('.ps-3');
+        const item = document.createElement('div');
+        item.className = 'd-flex gap-2 align-items-start mb-2';
+
+        const idInput = createInput('Item Id', data?.Id ?? ('it-' + Date.now() + '-' + Math.floor(Math.random()*1000)));
+        const typeInput = createInput('Type (text|audio|pdf|link)', data?.Type ?? 'text');
+        const titleInput = createInput('Title', data?.Title ?? '');
+        const pathInput = createInput('Path', data?.Path ?? '');
+
+        const controls = document.createElement('div');
+        controls.appendChild(createButton('Remover', 'btn btn-sm btn-danger', () => item.remove()));
+
+        const left = document.createElement('div');
+        left.style.flex = '1';
+        left.appendChild(idInput);
+        left.appendChild(typeInput);
+        left.appendChild(titleInput);
+        left.appendChild(pathInput);
+
+        item.appendChild(left);
+        item.appendChild(controls);
+
+        itemsContainer.appendChild(item);
+        return item;
+    }
+
+    function render(json) {
+        const editor = document.getElementById('editor');
+        editor.innerHTML = '';
+        const modules = (json.Modules || []);
+        modules.forEach(m => addModule(m));
+    }
+
+    function serialize() {
+        const editor = document.getElementById('editor');
+        const modules = [];
+        editor.querySelectorAll('.card').forEach(moduleDiv => {
+            // moduleDiv: card containing module (and possibly lesson cards inside)
+            const inputs = moduleDiv.querySelectorAll(':scope > input');
+            if (inputs.length < 2) return; // skip unexpected
+            const modId = inputs[0].value.trim();
+            const modTitle = inputs[1].value.trim();
+
+            const lessons = [];
+            moduleDiv.querySelectorAll(':scope > .ps-3 > .card').forEach(lessonDiv => {
+                const linputs = lessonDiv.querySelectorAll(':scope > input');
+                if (linputs.length < 2) return;
+                const lesId = linputs[0].value.trim();
+                const lesTitle = linputs[1].value.trim();
+
+                const items = [];
+                lessonDiv.querySelectorAll(':scope > .ps-3 > .d-flex').forEach(itemDiv => {
+                    const itemInputs = itemDiv.querySelectorAll('input');
+                    if (itemInputs.length < 4) return;
+                    items.push({
+                        Id: itemInputs[0].value.trim(),
+                        Type: itemInputs[1].value.trim(),
+                        Title: itemInputs[2].value.trim(),
+                        Path: itemInputs[3].value.trim()
+                    });
+                });
+
+                lessons.push({ Id: lesId, Title: lesTitle, Items: items });
+            });
+
+            modules.push({ Id: modId, Title: modTitle, Lessons: lessons });
+        });
+
+        const obj = { Modules: modules };
+        document.getElementById('JsonContent').value = JSON.stringify(obj, null, 2);
+    }
+
+    document.getElementById('editForm').addEventListener('submit', function (e) {
+        serialize();
+    });
+
+    // Initialize editor from server JSON (server JSON injected as object literal)
+    try {
+        render(initialJson ?? { Modules: [] });
+    } catch (ex) {
+        console.error('Invalid initial JSON', ex);
+        render({ Modules: [] });
+    }
+</script>
