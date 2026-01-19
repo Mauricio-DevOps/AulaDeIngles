@@ -21,13 +21,7 @@ public class LibraryModel : PageModel
 
         if (auth != "ok") return RedirectToPage("/Login");
 
-        var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "content.json");
-        var json = System.IO.File.ReadAllText(jsonPath);
-
-        Content = JsonSerializer.Deserialize<ContentRoot>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        }) ?? new ContentRoot();
+        Content = ContentService.Load();
 
         return Page();
     }

@@ -29,6 +29,7 @@
                         
                         @{
                             var isLogged = Context.Session.GetString("auth") == "ok";
+                            var role = Context.Session.GetString("role") ?? "";
                         }
 
                         @if (!isLogged)
@@ -47,6 +48,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/Library">Biblioteca</a>
                         </li>
+
+                        @if (role == "admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/EditLibrary">Editar Biblioteca</a>
+                            </li>
+                        }
 
                     </ul>
                 </div>

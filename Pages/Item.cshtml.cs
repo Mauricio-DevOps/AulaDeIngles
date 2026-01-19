@@ -24,14 +24,8 @@ public class ItemModel : PageModel
 
         var user = HttpContext.Session.GetString("user") ?? "anon";
 
-        // ✅ Lê o content.json e cria a variável "content"
-        var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "content.json");
-        var json = System.IO.File.ReadAllText(jsonPath);
-
-        var content = JsonSerializer.Deserialize<ContentRoot>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        }) ?? new ContentRoot();
+        // Load content via ContentService
+        var content = ContentService.Load();
 
         // ✅ Encontra o item pelo Id vindo da querystring (?id=...)
         Item = content.Modules
