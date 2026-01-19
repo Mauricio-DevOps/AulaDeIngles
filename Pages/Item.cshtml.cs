@@ -11,6 +11,8 @@ public class ItemModel : PageModel
     public ContentItem? Item { get; private set; }
     public string? TextContent { get; private set; }
 
+    public string LessonId { get; private set; } = "";
+
     [BindProperty(SupportsGet = true)]
     public string Id { get; set; } = "";
 
@@ -32,6 +34,12 @@ public class ItemModel : PageModel
             .SelectMany(m => m.Lessons)
             .SelectMany(l => l.Items)
             .FirstOrDefault(i => i.Id == Id);
+
+        // Encontrar a aula pai para permitir o retorno correto
+        var lesson = content.Modules
+            .SelectMany(m => m.Lessons)
+            .FirstOrDefault(l => l.Items.Any(it => it.Id == Id));
+        LessonId = lesson?.Id ?? "";
 
         if (Item is null) return Page();
 

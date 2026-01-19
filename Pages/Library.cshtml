@@ -4,15 +4,52 @@
     ViewData["Title"] = "Biblioteca";
 }
 
-<h2>Biblioteca</h2>
-
-@foreach (var module in Model.Content.Modules)
-{
-    var total = module.Lessons.Sum(l => l.Items.Count);
-    var done = module.Lessons.Sum(l => l.Items.Count(i => Model.DoneItems.Contains(i.Id)));
-
-    <h3>
-        <a asp-page="/Module" asp-route-id="@module.Id">@module.Title</a>
-        <small>(@done/@total)</small>
-    </h3>
+@{
+    var role = HttpContext.Session.GetString("role") ?? "";
 }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-0">Biblioteca</h1>
+        <div class="text-muted">Explore os módulos e acompanhe seu progresso</div>
+    </div>
+    @if (role == "admin")
+    {
+        <div>
+            <a class="btn btn-sm btn-outline-secondary me-2" asp-page="/EditLibrary">Editar Biblioteca</a>
+        </div>
+    }
+</div>
+
+<div class="row g-3">
+    @foreach (var module in Model.Content.Modules)
+    {
+        var total = module.Lessons.Sum(l => l.Items.Count);
+        var done = module.Lessons.Sum(l => l.Items.Count(i => Model.DoneItems.Contains(i.Id)));
+        var percent = total == 0 ? 0 : (int)Math.Round(100.0 * done / total);
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <div class="card module-card h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h5 class="card-title mb-1"><a asp-page="/Module" asp-route-id="@module.Id" class="stretched-link text-decoration-none">@module.Title</a></h5>
+                            <div class="text-muted small">@module.Lessons.Count lesson(s) • @total item(s)</div>
+                        </div>
+                        <div>
+                            <span class="badge bg-primary">@percent%<small class="ms-1">done</small></span>
+                        </div>
+                    </div>
+
+                    <div class="progress mb-3" style="height:8px">
+                        <div class="progress-bar" role="progressbar" style="width:@percent%" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <a class="btn btn-sm btn-outline-primary" asp-page="/Module" asp-route-id="@module.Id">Abrir módulo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

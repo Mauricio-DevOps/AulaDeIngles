@@ -11,47 +11,50 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Library">AulaDeIngles</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        @{
+            var isLogged = Context.Session.GetString("auth") == "ok";
+            var user = Context.Session.GetString("user") ?? "";
+            var role = Context.Session.GetString("role") ?? "";
+        }
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-page="/Library">
+                    <span class="me-2 logo-dot"></span>
+                    <span>AulaDeIngles</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <!-- Home and Privacy removed -->
-                        
-                        @{
-                            var isLogged = Context.Session.GetString("auth") == "ok";
-                            var role = Context.Session.GetString("role") ?? "";
-                        }
 
-                        @if (!isLogged)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Login">Login</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Logout">Sair</a>
-                            </li>
-                        }
-
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-page="/Library">Biblioteca</a>
+                            <a class="nav-link" asp-page="/Library">Biblioteca</a>
                         </li>
-
                         @if (role == "admin")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/EditLibrary">Editar Biblioteca</a>
+                                <a class="nav-link" asp-page="/EditLibrary">Editar Biblioteca</a>
                             </li>
                         }
-
                     </ul>
+
+                    <div class="d-flex align-items-center">
+                        @if (!isLogged)
+                        {
+                            <a class="btn btn-outline-light btn-sm me-2" asp-page="/Login">Entrar</a>
+                        }
+                        else
+                        {
+                            <div class="me-3 text-white small text-end">
+                                <div>@user</div>
+                                <div><span class="badge bg-light text-primary">@role</span></div>
+                            </div>
+                            <a class="btn btn-light btn-sm" asp-page="/Logout">Sair</a>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
