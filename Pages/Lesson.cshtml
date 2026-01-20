@@ -6,26 +6,56 @@
 
 @if (Model.LessonData == null || Model.ModuleData == null)
 {
-    <p>Aula não encontrada.</p>
+    <div class="alert alert-warning">Aula não encontrada.</div>
 }
 else
 {
-    <h2>@Model.LessonData.Title</h2>
-    <p><small>@Model.LessonDone/@Model.LessonTotal concluídos</small></p>
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <h2 class="h4 mb-1">@Model.LessonData.Title</h2>
+            <div class="text-muted small">@Model.ModuleData.Title</div>
+        </div>
+        <div>
+            <a class="btn btn-sm btn-outline-secondary" asp-page="/Module" asp-route-id="@Model.ModuleData.Id">← Voltar</a>
+        </div>
+    </div>
 
-    <ul>
+    <div class="mb-4">
+        @{ var lessonPercent = Model.LessonTotal == 0 ? 0 : (int)Math.Round(100.0 * Model.LessonDone / Model.LessonTotal); }
+        <div class="d-flex justify-content-between mb-2">
+            <div class="small text-muted">Progresso da aula</div>
+            <div class="small text-muted">@lessonPercent% concluído</div>
+        </div>
+        <div class="progress" style="height:10px">
+            <div class="progress-bar bg-success" role="progressbar" style="width:@lessonPercent%" aria-valuenow="@lessonPercent" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+
+    <div class="list-group">
         @foreach (var item in Model.LessonData.Items)
         {
-            <li>
-                @(Model.DoneItems.Contains(item.Id) ? "✅" : "⬜")
-                <a asp-page="/Item" asp-route-id="@item.Id">
-                    @item.Type.ToUpper() - @item.Title
-                </a>
-            </li>
+            var done = Model.DoneItems.Contains(item.Id);
+            <div class="list-group-item d-flex align-items-start justify-content-between lesson-item">
+                <div class="me-3">
+                    <div class="fw-semibold">@item.Title</div>
+                    <div class="text-muted small">@item.Type.ToUpper() • @item.Path</div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                    <div class="mb-2">
+                        @if (done)
+                        {
+                            <span class="badge bg-success">Concluído</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Pendente</span>
+                        }
+                    </div>
+                    <div>
+                        <a class="btn btn-sm btn-outline-primary" asp-page="/Item" asp-route-id="@item.Id">Abrir</a>
+                    </div>
+                </div>
+            </div>
         }
-    </ul>
-
-    <p style="margin-top:20px;">
-        <a asp-page="/Module" asp-route-id="@Model.ModuleData.Id">← Voltar</a>
-    </p>
+    </div>
 }

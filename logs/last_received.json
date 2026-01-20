@@ -1,0 +1,14 @@
+{
+  "modules": [
+    {
+      "id": "Módulo 1 - Basics",
+      "title": "Aula 1 - Greetings",
+      "lessons": []
+    },
+    {
+      "id": "Módulo 2 - Basics",
+      "title": "Aula 3 - Greetings",
+      "lessons": []
+    }
+  ]
+}

@@ -21,6 +21,132 @@ body {
   margin-bottom: 60px;
 }
 
+/* Login page styles */
+.login-page {
+  min-height: calc(100vh - 120px);
+  background: linear-gradient(180deg, #f7fbff 0%, #eef6ff 100%);
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.login-page .card {
+  border: none;
+  border-radius: 12px;
+}
+
+.login-page .card-body {
+  padding: 2rem;
+}
+
+.login-page .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Global theme variables */
+:root{
+  --primary: #0d6efd;
+  --primary-dark: #0b5ed7;
+  --muted: #6c757d;
+  --bg: #f4f8ff;
+  --card-radius: 12px;
+}
+
+body{
+  background: linear-gradient(180deg, #fbfdff 0%, #f3f7ff 100%);
+  color: #1b2330;
+}
+
+/* Navbar tweaks */
+.navbar-brand{font-weight:600}
+.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block}
+.navbar-dark .nav-link{color:rgba(255,255,255,0.9)}
+
+/* Footer */
+footer.border-top{border-top: none; padding:18px 0;}
+
+/* Buttons */
+.btn-primary{background:var(--primary);border-color:var(--primary)}
+.btn-primary:hover{background:var(--primary-dark)}
+
+/* Cards and spacing */
+.card{border-radius:var(--card-radius)}
+
+
+/* Library styles */
+.module-card {
+  border-radius: 12px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(16, 56, 110, 0.12);
+}
+.module-card .card-title a {
+  color: #0d6efd;
+}
+.module-card .progress {
+  background: #e9f2ff;
+}
+
+/* Lesson card styles */
+.lesson-card {
+  border-radius: 10px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.lesson-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(16, 56, 110, 0.08);
+}
+.lesson-card .card-title a {
+  color: #0d6efd;
+}
+
+/* Lesson page item styles */
+.lesson-item {
+  border-radius: 8px;
+  transition: transform .08s ease, box-shadow .08s ease;
+}
+.lesson-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(16, 56, 110, 0.06);
+}
+.lesson-item .fw-semibold {
+  font-weight: 600;
+}
+
+/* Item page styles */
+.content-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.content-pre {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace;
+}
+.item-content audio {
+  outline: none;
+}
+
+/* Media sizing: keep images and videos within reasonable bounds */
+.media-container {
+  display: block;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.media-fit {
+  width: 100%;
+  height: auto;
+  max-height: 560px; /* prevents very tall media */
+  object-fit: contain;
+  border-radius: 8px;
+  background: #000; /* helpful for video player background */
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;

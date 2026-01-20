@@ -2,14 +2,84 @@
   "modules": [
     {
       "id": "mod1",
-      "title": "Módulo 1 - Basics",
+      "title": "M\u00F3dulo 1 - Basics",
       "lessons": [
         {
           "id": "mod1-les1",
           "title": "Aula 1 - Greetings",
           "items": [
-            { "id": "i1", "type": "text", "title": "Texto: Hello / Hi", "path": "/texts/mod1-les1-greetings.txt" },
-            { "id": "i2", "type": "audio", "title": "Áudio: Greetings", "path": "/audios/mod1-les1-greetings.mp3" }
+            {
+              "id": "i1",
+              "type": "text",
+              "title": "Texto: Hello / Hi",
+              "path": "/texts/mod1-les1-greetings.txt"
+            },
+            {
+              "id": "i2",
+              "type": "audio",
+              "title": "\u00C1udio: Greetings",
+              "path": "/audios/AudioTeste.ogg"
+            },
+            {
+              "id": "it-1768852934320-252",
+              "type": "text",
+              "title": "Texto: Hello / Hi2",
+              "path": "/texts/mod1-les1-greetings.txt"
+            },
+            {
+              "id": "it-1768866225779-163",
+              "type": "image",
+              "title": "Novo Teste",
+              "path": "/images/it-1768866225779-163.jpeg"
+            }
+          ]
+        },
+        {
+          "id": "l-1768852976356-339",
+          "title": "Aula 2 - Greetings",
+          "items": [
+            {
+              "id": "it-1768853001596-157",
+              "type": "text",
+              "title": "Texto: Hello / Hi3",
+              "path": "/texts/mod1-les1-greetings.txt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m-1768853014047-982",
+      "title": "M\u00F3dulo 2 - Basics",
+      "lessons": [
+        {
+          "id": "l-1768853023886-897",
+          "title": "Aula 3 - Greetings",
+          "items": [
+            {
+              "id": "it-1768853041636-66",
+              "type": "text",
+              "title": "Tarefa",
+              "path": "/texts/mod1-les1-greetings.txt"
+            },
+            {
+              "id": "it-1768864732733-389",
+              "type": "audio",
+              "title": "TesteDeAudio",
+              "path": "/audios/it-1768864732733-389.ogg"
+            },
+            {
+              "id": "it-1768865786227-618",
+              "type": "video",
+              "title": "Video Teste",
+              "path": "/videos/it-1768865786227-618.mp4"
+            },
+            {
+              "id": "it-1768867854951-781",
+              "type": "image",
+              "title": "Teste do Teste",
+              "path": "/images/it-1768867854951-781.jpeg"
+            }
           ]
         }
       ]

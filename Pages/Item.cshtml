@@ -4,46 +4,78 @@
     ViewData["Title"] = "Conteúdo";
 }
 
-<form method="post" style="margin: 16px 0;">
-    <input type="hidden" asp-for="Id" />
-    <label>
-        <input asp-for="IsDone" />
-        Marcar como concluído
-    </label>
-    <button type="submit" style="margin-left:10px;">Salvar</button>
-</form>
-
-
-<h2>Conteúdo</h2>
-
 @if (Model.Item == null)
 {
-    <p>Item não encontrado.</p>
+    <div class="alert alert-warning">Item não encontrado.</div>
 }
 else
 {
-    <p><strong>@Model.Item.Title</strong></p>
+    <div class="card content-card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                    <h4 class="card-title mb-1">@Model.Item.Title</h4>
+                    <div class="text-muted small">Tipo: <span class="fw-semibold">@Model.Item.Type</span></div>
+                </div>
+                <div class="text-end">
+                    <form method="post" class="d-inline-block text-end">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" asp-for="IsDone" id="isDoneSwitch" />
+                            <label class="form-check-label small text-muted" for="isDoneSwitch">Concluído</label>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-    @if (Model.Item.Type == "text")
-    {
-        <pre style="background:#f5f5f5; padding:12px; border-radius:6px; white-space:pre-wrap;">
-            @Model.TextContent
-        </pre>
-    }
-    else if (Model.Item.Type == "audio")
-    {
-        <audio controls style="width: 100%;">
-            <source src="@Model.Item.Path" type="audio/mpeg" />
-            Seu navegador não suporta áudio.
-        </audio>
-    }
-    else
-    {
-        <p><strong>Tipo:</strong> @Model.Item.Type</p>
-        <p><strong>Caminho:</strong> @Model.Item.Path</p>
-    }
-
-    <p style="margin-top:20px;">
-        <a asp-page="/Library">← Voltar</a>
-    </p>
+            <div class="item-content">
+                @if (Model.Item.Type == "text")
+                {
+                    <pre class="content-pre">@Model.TextContent</pre>
+                }
+                else if (Model.Item.Type == "audio")
+                {
+                    <audio controls style="width:100%" class="mb-2">
+                        <source src="@Model.Item.Path" type="audio/mpeg" />
+                        Seu navegador não suporta áudio.
+                    </audio>
+                }
+                else if (Model.Item.Type == "video")
+                {
+                    <div class="media-container mb-2">
+                        <video controls class="media-fit">
+                            <source src="@Model.Item.Path" type="video/mp4" />
+                            Seu navegador não suporta vídeo.
+                        </video>
+                    </div>
+                }
+                else if (Model.Item.Type == "image")
+                {
+                    <div class="media-container mb-2 text-center">
+                        <img src="@Model.Item.Path" alt="@Model.Item.Title" class="media-fit img-fluid" />
+                    </div>
+                }
+                else if (Model.Item.Type == "pdf")
+                {
+                    <div class="ratio ratio-4x3">
+                        <iframe src="@Model.Item.Path"></iframe>
+                    </div>
+                }
+                else if (Model.Item.Type == "link")
+                {
+                    <a class="btn btn-outline-primary" href="@Model.Item.Path" target="_blank" rel="noopener">Abrir link</a>
+                }
+                else
+                {
+                    <p class="small text-muted mb-0">Caminho: @Model.Item.Path</p>
+                }
+            </div>
+        </div>
+        <div class="card-footer bg-transparent">
+            <a class="btn btn-sm btn-outline-secondary" asp-page="/Lesson" asp-route-id="@Model.LessonId">← Voltar</a>
+        </div>
+    </div>
 }

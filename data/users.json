@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Mauricio Naves",
+    "Email": "mauricio@teste.com",
+    "Password": "123",
+    "Type": 4
+  },
+  {
+    "Name": "Jessika BBb",
+    "Email": "jessikab@teste.com",
+    "Password": "123",
+    "Type": 3
+  },
+  {
+    "Name": "So Mais Um Ultimo",
+    "Email": "ultimo@teste.com",
+    "Password": "123",
+    "Type": 1
+  },
+  {
+    "Name": "Novo Teste Agora",
+    "Email": "testenovo@teste.com",
+    "Password": "123",
+    "Type": 2
+  }
+]

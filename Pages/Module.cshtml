@@ -6,29 +6,61 @@
 
 @if (Model.ModuleData == null)
 {
-    <p>Módulo não encontrado.</p>
+    <div class="alert alert-warning">Módulo não encontrado.</div>
 }
 else
 {
-    <h2>@Model.ModuleData.Title</h2>
-    <p><small>@Model.ModuleDone/@Model.ModuleTotal concluídos</small></p>
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <h2 class="h4 mb-1">@Model.ModuleData.Title</h2>
+            <div class="text-muted small">@Model.ModuleDone/@Model.ModuleTotal concluídos</div>
+        </div>
+        <div>
+            <a class="btn btn-sm btn-outline-secondary" asp-page="/Library">← Voltar</a>
+        </div>
+    </div>
 
-    <ul>
+    <div class="mb-4">
+        @{ var modulePercent = Model.ModuleTotal == 0 ? 0 : (int)Math.Round(100.0 * Model.ModuleDone / Model.ModuleTotal); }
+        <div class="d-flex justify-content-between mb-2">
+            <div class="small text-muted">Progresso do módulo</div>
+            <div class="small text-muted">@modulePercent% concluído</div>
+        </div>
+        <div class="progress" style="height:10px">
+            <div class="progress-bar bg-success" role="progressbar" style="width:@modulePercent%" aria-valuenow="@modulePercent" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+
+    <div class="row g-3">
         @foreach (var lesson in Model.ModuleData.Lessons)
         {
             var total = lesson.Items.Count;
             var done = lesson.Items.Count(i => Model.DoneItems.Contains(i.Id));
+            var percent = total == 0 ? 0 : (int)Math.Round(100.0 * done / total);
 
-            <li>
-                <a asp-page="/Lesson" asp-route-id="@lesson.Id">
-                    @lesson.Title
-                </a>
-                <small>(@done/@total)</small>
-            </li>
+            <div class="col-12 col-md-6">
+                <div class="card lesson-card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="card-title mb-1"><a asp-page="/Lesson" asp-route-id="@lesson.Id" class="stretched-link text-decoration-none">@lesson.Title</a></h5>
+                                <div class="text-muted small">@total item(s) • @done concluídos</div>
+                            </div>
+                            <div>
+                                <span class="badge bg-info">@percent% <small class="ms-1">done</small></span>
+                            </div>
+                        </div>
+
+                        <div class="progress mb-3" style="height:8px">
+                            <div class="progress-bar" role="progressbar" style="width:@percent%" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <a class="btn btn-sm btn-outline-primary" asp-page="/Lesson" asp-route-id="@lesson.Id">Abrir aula</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </ul>
-
-    <p style="margin-top:20px;">
-        <a asp-page="/Library">← Voltar</a>
-    </p>
+    </div>
 }
