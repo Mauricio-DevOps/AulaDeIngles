@@ -1,0 +1,67 @@
+@page
+@model AulaDeIngles.Pages.EditarUsuarioModel
+@{
+    ViewData["Title"] = "Editar Usuários";
+}
+
+<h1>Editar Usuários</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<form method="post">
+    <input type="hidden" name="usersCount" value="@Model.Users.Count" />
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th>Tipo</th>
+                <th>Excluir</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                var u = Model.Users[i];
+
+                <tr>
+                    <td>
+                        <input class="form-control" name="name_@i" value="@u.Name" />
+                        <input type="hidden" name="orig_@i" value="@u.Email" />
+                    </td>
+
+                    <td>
+                        <input class="form-control" name="email_@i" value="@u.Email" />
+                    </td>
+
+                    <td>
+                        <input class="form-control" type="password" name="password_@i" value="@u.Password" />
+                    </td>
+
+                    <td>
+                        <select class="form-select" name="type_@i">
+                            <option value="1" selected="@(u.Type == 1)">Tipo 1</option>
+                            <option value="2" selected="@(u.Type == 2)">Tipo 2</option>
+                            <option value="3" selected="@(u.Type == 3)">Tipo 3</option>
+                            <option value="4" selected="@(u.Type == 4)">Tipo 4</option>
+                        </select>
+                    </td>
+
+                    <td class="text-center align-middle">
+                        <input type="checkbox" name="delete_@i" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Salvar alterações</button>
+        <a asp-page="/CadastrarAluno" class="btn btn-secondary ms-2">Novo aluno</a>
+    </div>
+</form>

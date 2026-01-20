@@ -6,21 +6,21 @@
     "Type": 4
   },
   {
-    "Name": "Jessika BB",
-    "Email": "jessika@teste.com",
+    "Name": "Jessika BBb",
+    "Email": "jessikab@teste.com",
     "Password": "123",
     "Type": 3
-  },
-  {
-    "Name": "Um Teste Novo",
-    "Email": "vidabb@teste.com",
-    "Password": "123",
-    "Type": 2
   },
   {
     "Name": "So Mais Um Ultimo",
     "Email": "ultimo@teste.com",
     "Password": "123",
     "Type": 1
+  },
+  {
+    "Name": "Novo Teste Agora",
+    "Email": "testenovo@teste.com",
+    "Password": "123",
+    "Type": 2
   }
 ]
