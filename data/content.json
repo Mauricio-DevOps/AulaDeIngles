@@ -25,6 +25,12 @@
               "type": "text",
               "title": "Texto: Hello / Hi2",
               "path": "/texts/mod1-les1-greetings.txt"
+            },
+            {
+              "id": "it-1768866225779-163",
+              "type": "image",
+              "title": "Novo Teste",
+              "path": "/images/it-1768866225779-163.jpeg"
             }
           ]
         },
@@ -55,6 +61,24 @@
               "type": "text",
               "title": "Tarefa",
               "path": "/texts/mod1-les1-greetings.txt"
+            },
+            {
+              "id": "it-1768864732733-389",
+              "type": "audio",
+              "title": "TesteDeAudio",
+              "path": "/audios/it-1768864732733-389.ogg"
+            },
+            {
+              "id": "it-1768865786227-618",
+              "type": "video",
+              "title": "Video Teste",
+              "path": "/videos/it-1768865786227-618.mp4"
+            },
+            {
+              "id": "it-1768867854951-781",
+              "type": "image",
+              "title": "Teste do Teste",
+              "path": "/images/it-1768867854951-781.jpeg"
             }
           ]
         }

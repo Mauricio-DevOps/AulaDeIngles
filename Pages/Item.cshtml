@@ -43,6 +43,21 @@ else
                         Seu navegador não suporta áudio.
                     </audio>
                 }
+                else if (Model.Item.Type == "video")
+                {
+                    <div class="media-container mb-2">
+                        <video controls class="media-fit">
+                            <source src="@Model.Item.Path" type="video/mp4" />
+                            Seu navegador não suporta vídeo.
+                        </video>
+                    </div>
+                }
+                else if (Model.Item.Type == "image")
+                {
+                    <div class="media-container mb-2 text-center">
+                        <img src="@Model.Item.Path" alt="@Model.Item.Title" class="media-fit img-fluid" />
+                    </div>
+                }
                 else if (Model.Item.Type == "pdf")
                 {
                     <div class="ratio ratio-4x3">

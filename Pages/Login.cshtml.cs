@@ -31,6 +31,23 @@ public class LoginModel : PageModel
             return RedirectToPage("/Library");
         }
 
+        // check persisted users
+        try
+        {
+            if (AulaDeIngles.Services.UserService.Authenticate(Email, Password, out var found))
+            {
+                HttpContext.Session.SetString("auth", "ok");
+                HttpContext.Session.SetString("user", Email);
+                HttpContext.Session.SetString("role", "student");
+                if (found != null)
+                {
+                    HttpContext.Session.SetString("userType", found.Type.ToString());
+                }
+                return RedirectToPage("/Library");
+            }
+        }
+        catch { /* ignore */ }
+
         Error = "Credenciais inválidas.";
         return Page();
     }

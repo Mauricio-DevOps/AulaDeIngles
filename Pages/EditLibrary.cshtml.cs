@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using System.IO;
 using System;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
 using AulaDeIngles.Models;
 using AulaDeIngles.Services;
 
@@ -72,6 +74,77 @@ public class EditLibraryModel : PageModel
 
             content.Modules ??= new List<Module>();
             Log($"Deserialized content.Modules count: {content.Modules.Count}");
+
+            // Process uploaded files and delete flags
+            try
+            {
+                var files = Request.Form.Files;
+                foreach (var module in content.Modules)
+                {
+                    foreach (var lesson in module.Lessons ?? new List<Lesson>())
+                    {
+                        foreach (var item in lesson.Items ?? new List<ContentItem>())
+                        {
+                            var fileKey = "file_" + item.Id;
+                            var delKey = "delete_" + item.Id;
+
+                            var file = files.FirstOrDefault(f => f.Name == fileKey);
+                            if (file != null && file.Length > 0)
+                            {
+                                var ext = Path.GetExtension(file.FileName);
+                                var folder = item.Type?.ToLower() switch
+                                {
+                                    "text" => "texts",
+                                    "audio" => "audios",
+                                    "pdf" => "pdfs",
+                                    "video" => "videos",
+                                    "image" => "images",
+                                    _ => "files"
+                                };
+
+                                var saveDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder);
+                                if (!Directory.Exists(saveDir)) Directory.CreateDirectory(saveDir);
+
+                                var safeName = item.Id + (string.IsNullOrEmpty(ext) ? "" : ext);
+                                var savePath = Path.Combine(saveDir, safeName);
+                                using (var stream = System.IO.File.Create(savePath))
+                                {
+                                    file.CopyTo(stream);
+                                }
+
+                                item.Path = "/" + Path.Combine(folder, safeName).Replace("\\", "/");
+                                Log($"Uploaded file for item {item.Id} -> {item.Path}");
+                            }
+
+                            if (!string.IsNullOrEmpty(Request.Form[delKey]))
+                            {
+                                // delete existing file if it's inside wwwroot
+                                if (!string.IsNullOrEmpty(item.Path) && item.Path.StartsWith("/"))
+                                {
+                                    var phys = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", item.Path.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
+                                    try
+                                    {
+                                        if (System.IO.File.Exists(phys))
+                                        {
+                                            System.IO.File.Delete(phys);
+                                            Log($"Deleted file {phys} for item {item.Id}");
+                                        }
+                                    }
+                                    catch (Exception dex)
+                                    {
+                                        Log($"Error deleting file {phys}: " + dex.ToString());
+                                    }
+                                }
+                                item.Path = "";
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exFiles)
+            {
+                Log("Error processing uploaded files: " + exFiles.ToString());
+            }
 
             Log("Calling ContentService.Save...");
             try

@@ -1,0 +1,41 @@
+@page
+@model AulaDeIngles.Pages.CadastrarAlunoModel
+@{
+    ViewData["Title"] = "Cadastrar Aluno";
+}
+
+<h1>Cadastrar Aluno</h1>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<form method="post" class="w-50">
+    <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input class="form-control" asp-for="Name" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" asp-for="Email" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Senha</label>
+        <input class="form-control" type="password" asp-for="Password" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tipo</label>
+        <select class="form-select" asp-for="Type">
+            <option value="1">Tipo 1</option>
+            <option value="2">Tipo 2</option>
+            <option value="3">Tipo 3</option>
+            <option value="4">Tipo 4</option>
+        </select>
+    </div>
+
+    <div>
+        <button class="btn btn-primary">Cadastrar</button>
+        <a asp-page="/Library" class="btn btn-secondary ms-2">Cancelar</a>
+    </div>
+</form>

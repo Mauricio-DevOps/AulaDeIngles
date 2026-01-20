@@ -11,7 +11,7 @@
     <div class="alert alert-danger">@Model.Error</div>
 }
 
-<form method="post" id="editForm">
+<form method="post" id="editForm" enctype="multipart/form-data">
     <input type="hidden" id="JsonContent" name="JsonContent" />
 
     <div class="mb-3">
@@ -30,6 +30,7 @@
 
     function createInput(placeholder, value) {
         const inp = document.createElement('input');
+        inp.type = 'text';
         inp.className = 'form-control mb-1';
         inp.placeholder = placeholder;
         inp.value = value ?? '';
@@ -54,7 +55,7 @@
         const titleInput = createInput('Module Title', data?.title ?? data?.Title ?? '');
 
         const header = document.createElement('div');
-        header.appendChild(idInput);
+        //header.appendChild(idInput);
         header.appendChild(titleInput);
 
         const controls = document.createElement('div');
@@ -91,7 +92,7 @@
         const itemsContainer = document.createElement('div');
         itemsContainer.className = 'ps-3';
 
-        lesson.appendChild(idInput);
+        //lesson.appendChild(idInput);
         lesson.appendChild(titleInput);
         lesson.appendChild(controls);
         lesson.appendChild(itemsContainer);
@@ -108,19 +109,43 @@
         item.className = 'd-flex gap-2 align-items-start mb-2';
 
         const idInput = createInput('Item Id', data?.id ?? data?.Id ?? ('it-' + Date.now() + '-' + Math.floor(Math.random()*1000)));
-        const typeInput = createInput('Type (text|audio|pdf|link)', data?.type ?? data?.Type ?? 'text');
+        const typeInput = createInput('Type (text|audio|pdf|video|image|link)', data?.type ?? data?.Type ?? 'text');
         const titleInput = createInput('Title', data?.title ?? data?.Title ?? '');
         const pathInput = createInput('Path', data?.path ?? data?.Path ?? '');
+        pathInput.readOnly = true;
+
+        // file input for upload
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.name = 'file_' + (data?.id ?? data?.Id ?? idInput.value);
+        fileInput.className = 'form-control mb-1';
+
+        // delete checkbox
+        const deleteDiv = document.createElement('div');
+        deleteDiv.className = 'form-check mb-1';
+        const deleteInput = document.createElement('input');
+        deleteInput.type = 'checkbox';
+        deleteInput.name = 'delete_' + (data?.id ?? data?.Id ?? idInput.value);
+        deleteInput.className = 'form-check-input';
+        deleteInput.id = 'delete_' + (data?.id ?? data?.Id ?? idInput.value);
+        const deleteLabel = document.createElement('label');
+        deleteLabel.className = 'form-check-label small';
+        deleteLabel.htmlFor = deleteInput.id;
+        deleteLabel.textContent = 'Deletar arquivo existente';
+        deleteDiv.appendChild(deleteInput);
+        deleteDiv.appendChild(deleteLabel);
 
         const controls = document.createElement('div');
         controls.appendChild(createButton('Remover', 'btn btn-sm btn-danger', () => item.remove()));
 
         const left = document.createElement('div');
         left.style.flex = '1';
-        left.appendChild(idInput);
+        //left.appendChild(idInput);
         left.appendChild(typeInput);
         left.appendChild(titleInput);
-        left.appendChild(pathInput);
+        //left.appendChild(pathInput);
+        left.appendChild(fileInput);
+        left.appendChild(deleteDiv);
 
         item.appendChild(left);
         item.appendChild(controls);
@@ -155,7 +180,8 @@
 
                 const items = [];
                 lessonDiv.querySelectorAll(':scope > .ps-3 > .d-flex').forEach(itemDiv => {
-                    const itemInputs = itemDiv.querySelectorAll('input');
+                    // gather text inputs (id, type, title, path). ensure inputs created without explicit type are included
+                    const itemInputs = itemDiv.querySelectorAll('input[type="text"], input:not([type])');
                     if (itemInputs.length < 4) return;
                     items.push({
                         id: itemInputs[0].value.trim(),
